@@ -1,7 +1,7 @@
 import MainLayout from "../layouts/MainLayout";
 import Hero from "../components/home/Hero";
 import Categories from "../components/home/Categories";
-import FeaturedProducts from "../components/home/FeaturedProducts";
+import FeaturedProducts from "../components/home/featuredProducts";
 
 const Home = () => {
   return (
