@@ -16,6 +16,7 @@ import MyOrders from "../pages/MyOrders";
 
 import AdminLayout from "../layouts/AdminLayout";
 import AdminDashboard from "../pages/admin/AdminDashboard";
+import AdminLogin from "../pages/admin/AdminLogin";
 import ProductList from "../pages/admin/ProductList";
 import AddProduct from "../pages/admin/AddProduct";
 import EditProduct from "../pages/admin/EditProduct";
@@ -29,7 +30,10 @@ import AllProducts from "../pages/admin/AllProducts";
 const AppRoutes = () => {
   return (
     <Routes>
-      {/* Public Routes */}
+
+      {/* =========================
+          Public Routes
+      ========================= */}
       <Route path="/" element={<Home />} />
       <Route path="/shop" element={<Shop />} />
       <Route path="/about" element={<About />} />
@@ -41,7 +45,17 @@ const AppRoutes = () => {
       <Route path="/register" element={<Register />} />
       <Route path="/login" element={<Login />} />
 
-      {/* Protected User Routes */}
+      {/* =========================
+          Admin Login
+      ========================= */}
+      <Route
+        path="/admin/login"
+        element={<AdminLogin />}
+      />
+
+      {/* =========================
+          Protected User Routes
+      ========================= */}
       <Route
         path="/checkout"
         element={
@@ -69,7 +83,9 @@ const AppRoutes = () => {
         }
       />
 
-      {/* Protected Admin Routes */}
+      {/* =========================
+          Protected Admin Routes
+      ========================= */}
       <Route
         path="/admin"
         element={
@@ -85,6 +101,7 @@ const AppRoutes = () => {
         <Route path="orders" element={<Orders />} />
         <Route path="all-products" element={<AllProducts />} />
       </Route>
+
     </Routes>
   );
 };

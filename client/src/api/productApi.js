@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "https://mangal-shringar-ecommerce.onrender.com/api",
+  baseURL: "http://localhost:5000/api",
 });
 
 // Add JWT token automatically
@@ -24,9 +24,24 @@ export const getProducts = () => API.get("/products");
 export const getProductById = (id) =>
   API.get(`/products/${id}`);
 
-// Add Product
-export const addProduct = (data) =>
-  API.post("/products", data);
+// Add Product with Image
+export const addProduct = (data, imageFile) => {
+  const formData = new FormData();
+
+  formData.append("title", data.title);
+  formData.append("description", data.description);
+  formData.append("price", data.price);
+  formData.append("oldPrice", data.oldPrice);
+  formData.append("category", data.category);
+  formData.append("stock", data.stock);
+  formData.append("rating", data.rating);
+
+  if (imageFile) {
+    formData.append("image", imageFile);
+  }
+
+  return API.post("/products", formData);
+};
 
 // Update Product
 export const updateProduct = (id, data) =>

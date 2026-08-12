@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+
 import {
   FaBoxOpen,
   FaShoppingCart,
@@ -10,7 +11,6 @@ import { getProducts } from "../../api/productApi";
 import { getOrders } from "../../api/orderApi";
 
 const AdminDashboard = () => {
-
   const [stats, setStats] = useState({
     products: 0,
     orders: 0,
@@ -18,16 +18,13 @@ const AdminDashboard = () => {
     revenue: 0,
   });
 
-
   const fetchDashboardData = async () => {
     try {
       const productRes = await getProducts();
       const orderRes = await getOrders();
 
-
       const products = productRes.data;
       const orders = orderRes.data.orders;
-
 
       const customers = [
         ...new Set(
@@ -35,13 +32,11 @@ const AdminDashboard = () => {
         ),
       ];
 
-
       const revenue = orders.reduce(
         (total, order) =>
           total + order.totalAmount,
         0
       );
-
 
       setStats({
         products: products.length,
@@ -49,8 +44,6 @@ const AdminDashboard = () => {
         customers: customers.length,
         revenue,
       });
-
-
     } catch (error) {
       console.error(
         "Dashboard Error:",
@@ -59,78 +52,67 @@ const AdminDashboard = () => {
     }
   };
 
-
   useEffect(() => {
     fetchDashboardData();
   }, []);
-
-
 
   const cards = [
     {
       title: "Total Products",
       value: stats.products,
-      icon: <FaBoxOpen size={30} />,
+      icon: <FaBoxOpen size={24} />,
     },
-
     {
       title: "Total Orders",
       value: stats.orders,
-      icon: <FaShoppingCart size={30} />,
+      icon: <FaShoppingCart size={24} />,
     },
-
     {
       title: "Total Customers",
       value: stats.customers,
-      icon: <FaUsers size={30} />,
+      icon: <FaUsers size={24} />,
     },
-
     {
       title: "Revenue",
       value: `₹${stats.revenue}`,
-      icon: <FaRupeeSign size={30} />,
+      icon: <FaRupeeSign size={24} />,
     },
   ];
 
-
-
   return (
-    <div className="min-h-screen bg-gray-100 p-8">
+    <div className="min-h-screen bg-gray-100 p-4 sm:p-6 md:p-8">
 
-      <h1 className="text-4xl font-bold text-[#6B4F2A] mb-8">
+      {/* Heading */}
+      <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#6B4F2A] mb-6 sm:mb-8">
         Admin Dashboard
       </h1>
 
-
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      {/* Stats Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 lg:gap-6">
 
         {cards.map((card, index) => (
-
           <div
             key={index}
-            className="bg-white rounded-2xl shadow-md p-6 flex items-center justify-between"
+            className="bg-white rounded-2xl shadow-md p-4 sm:p-5 md:p-6 flex items-center justify-between"
           >
 
-            <div>
+            <div className="min-w-0">
 
-              <h2 className="text-gray-500">
+              <h2 className="text-sm sm:text-base text-gray-500">
                 {card.title}
               </h2>
 
-              <p className="text-3xl font-bold mt-2">
+              <p className="text-2xl sm:text-3xl font-bold mt-2 break-words">
                 {card.value}
               </p>
 
             </div>
 
-
-            <div className="bg-[#C8A24A] text-white p-4 rounded-full">
+            <div className="flex-shrink-0 bg-[#C8A24A] text-white p-3 sm:p-4 rounded-full">
               {card.icon}
             </div>
 
-
           </div>
-
         ))}
 
       </div>
@@ -138,6 +120,5 @@ const AdminDashboard = () => {
     </div>
   );
 };
-
 
 export default AdminDashboard;

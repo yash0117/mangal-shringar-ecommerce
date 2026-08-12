@@ -13,41 +13,46 @@ import {
   protect,
 } from "../middleware/authMiddleware.js";
 
+import upload from "../config/upload.js";
 
 const router = express.Router();
 
-
-
-// Get All Products
+// =========================
+// GET All Products
+// =========================
 router.get("/", getProducts);
 
-
-
-// Get Single Product
+// =========================
+// GET Single Product
+// =========================
 router.get("/:id", getProductById);
 
+// =========================
+// ADD Product with Image Upload
+// =========================
+router.post(
+  "/",
+  upload.single("image"),
+  addProduct
+);
 
-
-// Add Product with Image Upload
-router.post("/", addProduct);
-
-
-// Delete Product
+// =========================
+// DELETE Product
+// =========================
 router.delete("/:id", deleteProduct);
 
-
-
-// Update Product
+// =========================
+// UPDATE Product
+// =========================
 router.put("/:id", updateProduct);
 
-
-
-// Add Review
+// =========================
+// ADD Review
+// =========================
 router.post(
   "/:id/reviews",
   protect,
   addReview
 );
-
 
 export default router;

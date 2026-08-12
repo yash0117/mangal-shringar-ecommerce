@@ -7,11 +7,12 @@ const AddProduct = () => {
     description: "",
     price: "",
     oldPrice: "",
-    image: "",
     category: "",
     stock: "",
     rating: "",
   });
+
+  const [imageFile, setImageFile] = useState(null);
 
   const handleChange = (e) => {
     setFormData({
@@ -20,11 +21,24 @@ const AddProduct = () => {
     });
   };
 
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+
+    if (file) {
+      setImageFile(file);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (!imageFile) {
+      alert("Please select a product image.");
+      return;
+    }
+
     try {
-      await addProduct(formData);
+      await addProduct(formData, imageFile);
 
       alert("✅ Product Added Successfully!");
 
@@ -33,14 +47,21 @@ const AddProduct = () => {
         description: "",
         price: "",
         oldPrice: "",
-        image: "",
         category: "",
         stock: "",
         rating: "",
       });
+
+      setImageFile(null);
+
+      // Reset file input
+      e.target.reset();
     } catch (error) {
-      console.error(error);
-      alert("Something went wrong!");
+      console.error("ADD PRODUCT ERROR:", error);
+      alert(
+        error.response?.data?.message ||
+        "Something went wrong while adding product!"
+      );
     }
   };
 
@@ -54,6 +75,7 @@ const AddProduct = () => {
 
         <form onSubmit={handleSubmit} className="space-y-5">
 
+          {/* Product Title */}
           <input
             type="text"
             name="title"
@@ -64,6 +86,7 @@ const AddProduct = () => {
             required
           />
 
+          {/* Description */}
           <textarea
             name="description"
             placeholder="Description"
@@ -74,6 +97,7 @@ const AddProduct = () => {
             required
           />
 
+          {/* Price */}
           <input
             type="number"
             name="price"
@@ -84,6 +108,7 @@ const AddProduct = () => {
             required
           />
 
+          {/* Old Price */}
           <input
             type="number"
             name="oldPrice"
@@ -93,16 +118,29 @@ const AddProduct = () => {
             className="w-full border rounded-lg p-3"
           />
 
-          <input
-            type="text"
-            name="image"
-            placeholder="Paste Image URL"
-            value={formData.image}
-            onChange={handleChange}
-            className="w-full border rounded-lg p-3"
-            required
-          />
+          {/* Image Upload */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Product Image
+            </label>
 
+            <input
+              type="file"
+              name="image"
+              accept="image/*"
+              onChange={handleImageChange}
+              className="w-full border rounded-lg p-3 bg-white"
+              required
+            />
+
+            {imageFile && (
+              <p className="text-sm text-green-600 mt-2">
+                Selected: {imageFile.name}
+              </p>
+            )}
+          </div>
+
+          {/* Category */}
           <input
             type="text"
             name="category"
@@ -113,6 +151,7 @@ const AddProduct = () => {
             required
           />
 
+          {/* Stock */}
           <input
             type="number"
             name="stock"
@@ -122,6 +161,7 @@ const AddProduct = () => {
             className="w-full border rounded-lg p-3"
           />
 
+          {/* Rating */}
           <input
             type="number"
             step="0.1"
@@ -132,9 +172,10 @@ const AddProduct = () => {
             className="w-full border rounded-lg p-3"
           />
 
+          {/* Submit */}
           <button
             type="submit"
-            className="w-full bg-[#C8A24A] text-white py-3 rounded-lg hover:bg-[#b28d3f]"
+            className="w-full bg-[#C8A24A] text-white py-3 rounded-lg hover:bg-[#b28d3f] transition"
           >
             Add Product
           </button>
